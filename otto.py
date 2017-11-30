@@ -89,10 +89,13 @@ if __name__=="__main__":
     models = [KNeighborsClassifier(5), RandomForestClassifier(), LinearSVC(), 
               LogisticRegression(), GradientBoostingClassifier(), MLPClassifier(), 
                                 GaussianNB(), QuadraticDiscriminantAnalysis() ]
-    accuracy = []
-    for clf in models:
+    names = ["KNeighborsClassifier(5)", "RandomForestClassifier()", "LinearSVC()", 
+              "LogisticRegression()", "GradientBoostingClassifier()", "MLPClassifier()", 
+                                "GaussianNB()", "QuadraticDiscriminantAnalysis()"]
+    accuracy = {}
+    for i, clf in enumerate(models):
         clf.fit(X_train, y_train)
         mean_acc = clf.score(X_test, y_test)
-        accuracy.append(mean_acc)
+        accuracy[names[i]] = mean_acc
         
 
