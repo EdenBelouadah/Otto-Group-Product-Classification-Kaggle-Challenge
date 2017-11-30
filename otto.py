@@ -18,7 +18,7 @@ from sklearn.linear_model import LogisticRegression #(setting multi_class=”mul
 from sklearn.model_selection import train_test_split
 import os
 
-path = "D:/mariem/Academics/master/cours/TC1/project"
+path = ""
 
 def read_data(csvfile):
     df = pd.read_csv(csvfile)
@@ -27,7 +27,6 @@ def read_data(csvfile):
 if __name__=="__main__":
     #read data
     trainFile = os.path.join(path, "train.csv")
-    testFile =  os.path.join(path, "test.csv")
     train_df = read_data(trainFile)
     #summary statistics of train data
     summary = train_df.describe()
