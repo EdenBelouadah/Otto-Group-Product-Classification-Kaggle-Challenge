@@ -12,9 +12,12 @@ import seaborn as sns
 from sklearn.decomposition import PCA
 from sklearn.feature_selection import SelectFromModel, SelectKBest, mutual_info_classif
 from sklearn.svm import LinearSVC
-from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier
+from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier, GradientBoostingClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression #(setting multi_class=”multinomial”)
+from sklearn.neural_network import MLPClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.model_selection import train_test_split
 import os
 
@@ -83,7 +86,9 @@ if __name__=="__main__":
                                           test_size =0.2, random_state = 42)
     
     #try out some classification models
-    models = [KNeighborsClassifier(5), RandomForestClassifier(), LogisticRegression()]
+    models = [KNeighborsClassifier(5), RandomForestClassifier(), LinearSVC(), 
+              LogisticRegression(), GradientBoostingClassifier(), MLPClassifier(), 
+                                GaussianNB(), QuadraticDiscriminantAnalysis() ]
     accuracy = []
     for clf in models:
         clf.fit(X_train, y_train)
