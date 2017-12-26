@@ -114,22 +114,34 @@ pdfdisplaydoctitle=true]{hyperref} % Pour les liens
 
 
 \section{Introduction}
-Classification is an important field since it's the base of so many real world problems. This project is based on the (Otto product classification) Kaggle Challenge.
+Product classification into meaningful categories helps marketers decide which strategy will help promote their business. This allows businesses, for example, design separate marketing campaigns for each category of product they offer. 
 
-In order to make a consistent analysis of products, Otto company organized this challenge. The main goal is to classify the gven product through 10 possible classes. 
+In this project, we will be working on the Otto group product classification challenge where the objective is to build a predictive model which is able to distinguish between the main product categories of the Group. 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth,keepaspectratio]{logo}
-	\caption{Otto products classification}
+	\includegraphics[width=0.6\textwidth,keepaspectratio]{otto}
+	\caption{Otto product classification}
 \end{figure}
 
+\section{Data Analysis}
+\subsection{Presenting the data}
 
-Tha dataset provided by Otto is composed of 61878 examples. Each example contains 93 features. All features are categorical and each one of them contains so many possible categories that can reach 300.
+Tha dataset provided by Otto has 61878 different products. Each sample is described by 93 categorical features. Values of the target variable can be one out of the 9 classes that the group identified. 
 
-\section{Data analytics}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth,keepaspectratio]{data}
+	\caption{Data presentation (61878 samples * 93 features * 9 classes)}
+\end{figure}
 
-Before going into classification problem, we started by providing some statistics and caracteristics of the dataset. The first remarkable thing about the features categories is that the category 0 is the most dominant one. This is why we notice an unbalacement in categories for all features. The next figure shows examples of features
+\subsection{Exploratory Data Analysis}
+
+Before tackling the classification problem, a good understanding of our data is needed. Thus, we will started by providing some statistics and features caracteristics .
+
+\subsubsection{Features Distributions}
+
+We plotted the distribution of all 93 features to see how they differ across products. The first thing to notice in the figures below is the dominance of  level 0 for all 93 fetures. Except for 2 or 3 features, the 75th percentile of the features distribution is 0. Since we have no idea about the sens of features in our data, we won't be able to figure out what a zero value means. Is might be either a missing value or a categorical level in itself. 
 
 \begin{figure}[H]
 	\centering
@@ -138,83 +150,126 @@ Before going into classification problem, we started by providing some statistic
 		\caption{Feature 4}
 	\end{subfigure}
 	\begin{subfigure}{0.22\textwidth}
-		\includegraphics[width=\textwidth]{feat_5}
-		\caption{Feature 5}
-	\end{subfigure}
-	\begin{subfigure}{0.22\textwidth}
 		\includegraphics[width=\textwidth]{feat_6}
 		\caption{Feature 6}
 	\end{subfigure}
 	\begin{subfigure}{0.22\textwidth}
-		\includegraphics[width=\textwidth]{feat_21}
-		\caption{Feature 21}
-	\end{subfigure}
-		\\
-	\begin{subfigure}{0.22\textwidth}
-		\includegraphics[width=\textwidth]{feat_92}
-		\caption{Feature 92}
+		\includegraphics[width=\textwidth]{feat_14}
+		\caption{Feature 14}
 	\end{subfigure}	
 	\begin{subfigure}{0.22\textwidth}
-		\includegraphics[width=\textwidth]{feat_22}
-		\caption{Feature 22}
+		\includegraphics[width=\textwidth]{feat_24}
+		\caption{Feature 24}
 	\end{subfigure}	
-	\begin{subfigure}{0.22\textwidth}
-		\includegraphics[width=\textwidth]{feat_25}
-		\caption{Feature 25}
-	\end{subfigure}	
-	\begin{subfigure}{0.22\textwidth}
-		\includegraphics[width=\textwidth]{feat_33}
-		\caption{Feature 33}
-	\end{subfigure}	
-	\caption{Categories distribution for some features}
+	\caption{Some features distributions}
 	\end{figure}
 
 
-The dominance of the zero class is probably due to unknown features values that has been just transformed to 0.
+\subsubsection{Feature Correlation}
 
-\subsection{Features correlation}
-The correlation study that we did on features reveals that there's no remarkable correlation between them. The more blue is the region, the more correlated the features are. 
+In figure \ref{correlation}, we show the correlation of the 93 features. As one may notice, a relatively high correlatio exis between a subset of features. For instance, top 10 highest correlation coefficients are shown in  figure \ref{top10}. Features like feat$_39$ and feat$_45$ are positively and highly correlated, with a coefficient of 0.82. Thus, we may think of a way to reduce dimensionality of the feature space, albeit no significant information loss occurs.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth,keepaspectratio]{corr}
+	\includegraphics[width=0.8\textwidth,keepaspectratio]{corr_Otto}
 	\caption{Correlation between features}
+	\label{correlation}
 \end{figure}
-
-\subsection{Classes distribution}
-
-As the features categories are not balanced, the problem classes are not balanced too! We see that some classes figure most of time, but this in not the case for the other classes. This makes classification problem more difficult.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth,keepaspectratio]{target}
-	\caption{Classes distribution in the dataset}
+	\includegraphics[width=0.7\textwidth,keepaspectratio]{top10_corr}
+	\caption{Top 10 highest correlation coefficients}
+	\label{top10}
 \end{figure}
 
-\section{Classification process}
+\subsubsection{Class Distribution}
 
-Because the classes are not balanced, we aimed to devide the dataset in such a way that we keep the same pourcentage of each classe in both train and test sets. The figures below show the result of classes distribution before and after deviding the dataset.
+In figures \ref{target} and \ref{class_dist} we show the distribution of the target variable and the proportion of each class in the data, respectively.  We clearly see that classes are very imbalanced, indicating that we should be careful later on when we move to classification.
 
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}{0.22\textwidth}
-		\includegraphics[width=\textwidth]{target_init}
-		\caption{Full dataset}
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{target}
+		\caption{Class distribution in Otto dataset}
+		\label{target}
 	\end{subfigure}
-	\begin{subfigure}{0.22\textwidth}
-		\includegraphics[width=\textwidth]{target_train}
-		\caption{Train set}
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.3\textwidth]{class_dist}
+		\caption{Class proportions}
+		\label{class_dist}
 	\end{subfigure}
-	\begin{subfigure}{0.22\textwidth}
-		\includegraphics[width=\textwidth]{target_test}
-		\caption{Test set}
-	\end{subfigure}
-	\begin{subfigure}{0.22\textwidth}
-		\includegraphics[width=\textwidth]{target_val}
-		\caption{Validation set}
-	\end{subfigure}
-	\caption{Classes distribution for different sets}
+\caption{Classes distribution}
 \end{figure}
+
+
+\section{Predictive Modeling}
+
+In order to predict the class for each product, we tried several Scikit-Learn classification algorithms and compared their performances. Since it's a multiclass classification problem, we used a One-Vs-Rest classification schema  using the following models:
+\begin{itemize}
+\item Linear Support Vector Machines
+\item Random Forests
+\item Logistic Regression
+\item MLP Classifier
+\item Gaussian Naive Bayes
+\end{itemize}
+
+Since we are facing a class-imbalance problem, it is not wise to use simple accuracy to evaluate the model. Instead, we used the ROC AUC as a performance evaluation metric for our classifiers. Quoting Scikit-Learn documentation: "ROC curves typically feature true positive rate on the Y axis, and false positive rate on the X axis. This means that the top left corner of the plot is the “ideal” point - a false positive rate of zero, and a true positive rate of one. This is not very realistic, but it does mean that a larger area under the curve (AUC) is usually better. Although ROC curves are typically used in binary classification to study the output of a classifier, we may extend ROC curve and ROC area to multi-class or multi-label classification, but it is necessary to binarize the output first. One ROC curve can be drawn per label, but we can also draw a ROC curve by considering each element of the label indicator matrix as a binary prediction (micro-averaging).
+
+Another evaluation measure for multi-class classification is macro-averaging, which gives equal weight to the classification of each label.
+
+The “steepness” of ROC curves is also important, since it is ideal to maximize the true positive rate while minimizing the false positive rate".
+
+We also checked the performace of some models when they are applied to PCA-transformed data. 
+
+Finally, we used bagging of different classiers and evaluated its performance. Voting is one of the simplest ways of combining the predictions from multiple machine learning algorithms.It works by first creating two or more standalone models from the training dataset. A Voting Classifier can then be used to wrap the models and average the predictions of the sub-models when asked to make predictions for new data.
+
+\subsection{Results}
+In the figure below, we show the ROC curves resulting from the predictions of the models used. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth,keepaspectratio]{ROC_OvR_GaussianNB}
+	\caption{ROC for GaussianNB}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth,keepaspectratio]{ROC_OvR_RandomForestClassifier}
+	\caption{ROC for Random Forests}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth,keepaspectratio]{ROC_OvR_LinearSVC}
+	\caption{ROC for Linear SVC}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth,keepaspectratio]{ROC_OvR_MLPClassifier}
+	\caption{ROC for MLP}
+\end{figure}
+
+Clearly, the GaussianNB does not perform well on our data. However, Random Forests, SVM and MLP seem to have better AUCs. Also, their corresponding curves are steep, indication a good trade-off between True positives and False positives. We also notice that the curves differ from one class to another, reflecting the degree of difficulty to distinguish it from the other classes. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth,keepaspectratio]{ROC_OvR_LinearSVC_using_PCA}
+	\caption{ROC for SVM using class weights for the PCA-transformed data}
+\end{figure}
+
+We can notice that using the PCA-transformed feature space, we don't loose too much information when we use LinearSVC with balanced class weights as a classifier. Thus, for the sake of computation time optimization, one would prefer to use the reduced data rather than the initial one.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth,keepaspectratio]{ROC_OvR_Voting}
+	\caption{ROC for the Voting Classifier}
+\end{figure}
+
+As for the Voting Classifier, overall performance is now clearly enhanced, which is already expected. 
 
 \section{Conclusion}
 This is a conclusion
