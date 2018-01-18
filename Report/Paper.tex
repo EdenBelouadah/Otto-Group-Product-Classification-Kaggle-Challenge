@@ -1,5 +1,5 @@
 %\documentclass[a4paper,english,12pt,twocolumn]{article}
-\documentclass[a4paper,english,12pt]{article}
+\documentclass[a4paper,english,12pt, twocolumn]{article}
 \usepackage[utf8]{inputenc} % Encodage du fichier
 \usepackage[T1]{fontenc} % Encodage des fonts nécessaire pour le Latin
 \usepackage[french]{babel} % Pour changer la langue des mots générés et choisir la bonne mise en page
@@ -7,10 +7,10 @@
 \usepackage{pdflscape}
 \usepackage{microtype} 
 \usepackage{lmodern} % Le latin modèrne
-\usepackage[top=2cm, bottom=2cm, left=2.5cm, right=1.5cm]{geometry} % Définir les marges de la page 
+\usepackage[top=1.5cm, bottom=1.5cm, left=2.5cm, right=1.5cm]{geometry} % Définir les marges de la page 
 \usepackage[hidelinks,urlcolor=blue,unicode=true,
-pdftitle={Prediction of episode's number from its summary},
-pdfauthor={BELOUADAH Eden and BOUHAHA Mariem},
+pdftitle={Otto Product Classification},
+pdfauthor={BOUHAHA Mariem and BELOUADAH Eden},
 pdfdisplaydoctitle=true]{hyperref} % Pour les liens 
 \usepackage{fancyhdr} % Pour le style de la page
 \usepackage[font=it]{caption} % Rendre les titres des tableaux italiques
@@ -26,7 +26,7 @@ pdfdisplaydoctitle=true]{hyperref} % Pour les liens
 \usepackage{enumitem}
 \usepackage{setspace}
 
-\graphicspath{ {photos/} } % Spécifier le répertoire contenant les images
+\graphicspath{ {images/} } % Spécifier le répertoire contenant les images
 
 \DisableLigatures[f]{encoding=*}
 
@@ -44,7 +44,7 @@ pdfdisplaydoctitle=true]{hyperref} % Pour les liens
 }
 
 % Style de l'entête et le pied de la page
-\setlength{\headheight}{16pt}
+\setlength{\headheight}{-60pt}
 \pagestyle{fancy}
 \fancyhead[L]{} % Enlever la section
 \fancyhead[R]{\footnotesize\slshape{\nouppercase{\leftmark}}} % Titre du chapitre en minuscule avec taille 10
@@ -106,23 +106,14 @@ pdfdisplaydoctitle=true]{hyperref} % Pour les liens
 \setcounter{page}{1}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{Otto Product Classification}
-\author{Mariem BOUHAHA \and Eden BELOUADAH}
-% \date{}
+\title{\Large Otto Product Classification}
+\author{\normalsize Mariem BOUHAHA \and \normalsize Eden BELOUADAH}
+\date{}
 \maketitle
-
-
-
 \section{Introduction}
 Product classification into meaningful categories helps marketers decide which strategy will help promote their business. This allows businesses, for example, design separate marketing campaigns for each category of product they offer. 
 
 In this project, we will be working on the Otto group product classification challenge where the objective is to build a predictive model which is able to distinguish between the main product categories of the Group. 
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.6\textwidth,keepaspectratio]{otto}
-	\caption{Otto product classification}
-\end{figure}
 
 \section{Data Analysis}
 \subsection{Presenting the data}
@@ -131,7 +122,7 @@ Tha dataset provided by Otto has 61878 different products. Each sample is descri
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth,keepaspectratio]{data}
+	\includegraphics[width=0.5\textwidth,keepaspectratio]{data}
 	\caption{Data presentation (61878 samples * 93 features * 9 classes)}
 \end{figure}
 
@@ -162,23 +153,18 @@ We plotted the distribution of all 93 features to see how they differ across pro
 		\caption{Feature 24}
 	\end{subfigure}	
 	\caption{Some features distributions}
-	\end{figure}
+\end{figure}
 
 
 \subsubsection{Feature Correlation}
 
 In figure \ref{correlation}, we show the correlation of the 93 features. As one may notice, a relatively high correlatio exis between a subset of features. For instance, top 10 highest correlation coefficients are shown in  figure \ref{top10}. Features like feat$_39$ and feat$_45$ are positively and highly correlated, with a coefficient of 0.82. Thus, we may think of a way to reduce dimensionality of the feature space, albeit no significant information loss occurs.
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth,keepaspectratio]{corr_Otto}
-	\caption{Correlation between features}
-	\label{correlation}
-\end{figure}
+
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth,keepaspectratio]{top10_corr}
+	\includegraphics[width=0.3\textwidth,keepaspectratio]{top10_corr}
 	\caption{Top 10 highest correlation coefficients}
 	\label{top10}
 \end{figure}
@@ -189,31 +175,31 @@ In figures \ref{target} and \ref{class_dist} we show the distribution of the tar
 
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}{0.4\textwidth}
 		\centering
-		\includegraphics[width=0.95\textwidth]{target}
-		\caption{Class distribution in Otto dataset}
+		\includegraphics[width=0.48\textwidth]{target}
 		\label{target}
-	\end{subfigure}
-	\begin{subfigure}{0.4\textwidth}
-		\centering
-		\includegraphics[width=0.3\textwidth]{class_dist}
-		\caption{Class proportions}
-		\label{class_dist}
-	\end{subfigure}
-\caption{Classes distribution}
+	\caption{Classes distribution}
 \end{figure}
+
+\begin{table}[H]\centering
+	\begin{tabular}{cccccccccc}
+		\toprule \textbf{Class} & 2 & 6 & 8 & 3 & 9 & 7 & 5 & 4 & 1\\    \midrule
+		\textbf{\%} & 26.05 & 22.84 & 13.68 & 12.94 & 8.01 &  4.59 & 4.43 &  4.35 & 3.12 \\   
+		\bottomrule	
+	\end{tabular}
+	\caption{Taux de réussite pour chaque taille de corpus\label{tab1}}
+\end{table}
 
 
 \section{Predictive Modeling}
 
 In order to predict the class for each product, we tried several Scikit-Learn classification algorithms and compared their performances. Since it's a multiclass classification problem, we used a One-Vs-Rest classification schema  using the following models:
 \begin{itemize}
-\item Linear Support Vector Machines
-\item Random Forests
-\item Logistic Regression
-\item MLP Classifier
-\item Gaussian Naive Bayes
+	\item Linear Support Vector Machines
+	\item Random Forests
+	\item Logistic Regression
+	\item MLP Classifier
+	\item Gaussian Naive Bayes
 \end{itemize}
 
 Since we are facing a class-imbalance problem, it is not wise to use simple accuracy to evaluate the model. Instead, we used the ROC AUC as a performance evaluation metric for our classifiers. Quoting Scikit-Learn documentation: "ROC curves typically feature true positive rate on the Y axis, and false positive rate on the X axis. This means that the top left corner of the plot is the “ideal” point - a false positive rate of zero, and a true positive rate of one. This is not very realistic, but it does mean that a larger area under the curve (AUC) is usually better. Although ROC curves are typically used in binary classification to study the output of a classifier, we may extend ROC curve and ROC area to multi-class or multi-label classification, but it is necessary to binarize the output first. One ROC curve can be drawn per label, but we can also draw a ROC curve by considering each element of the label indicator matrix as a binary prediction (micro-averaging).
@@ -231,25 +217,25 @@ In the figure below, we show the ROC curves resulting from the predictions of th
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth,keepaspectratio]{ROC_OvR_GaussianNB}
+	\includegraphics[width=0.48\textwidth,keepaspectratio]{ROC_OvR_GaussianNB}
 	\caption{ROC for GaussianNB}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth,keepaspectratio]{ROC_OvR_RandomForestClassifier}
+	\includegraphics[width=0.48\textwidth,keepaspectratio]{ROC_OvR_RandomForestClassifier}
 	\caption{ROC for Random Forests}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth,keepaspectratio]{ROC_OvR_LinearSVC}
+	\includegraphics[width=0.48\textwidth,keepaspectratio]{ROC_OvR_LinearSVC}
 	\caption{ROC for Linear SVC}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth,keepaspectratio]{ROC_OvR_MLPClassifier}
+	\includegraphics[width=0.48\textwidth,keepaspectratio]{ROC_OvR_MLPClassifier}
 	\caption{ROC for MLP}
 \end{figure}
 
@@ -257,7 +243,7 @@ Clearly, the GaussianNB does not perform well on our data. However, Random Fores
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth,keepaspectratio]{ROC_OvR_LinearSVC_using_PCA}
+	\includegraphics[width=0.48\textwidth,keepaspectratio]{ROC_OvR_LinearSVC_using_PCA}
 	\caption{ROC for SVM using class weights for the PCA-transformed data}
 \end{figure}
 
@@ -265,17 +251,18 @@ We can notice that using the PCA-transformed feature space, we don't loose too m
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth,keepaspectratio]{ROC_OvR_Voting}
+	\includegraphics[width=0.48\textwidth,keepaspectratio]{ROC_OvR_Voting}
 	\caption{ROC for the Voting Classifier}
 \end{figure}
 
 As for the Voting Classifier, overall performance is now clearly enhanced, which is already expected. 
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\bibliographystyle{babplain}
-\parskip=-1em
+%\bibliographystyle{babplain}
+%\parskip=-1em
 %\emptypage{\bibliography{bibliographie}}
-\let\section\oldsection % pour éviter que le résumé soient visibles dans le sommaire comme une section
+%\let\section\oldsection % pour éviter que le résumé soient visibles dans le sommaire comme une section
 %\include{Resume}
 \end{document}
